@@ -14,9 +14,12 @@ var express = require('express')
 //var DBHOST   = "https://129.152.129.94";
 const DBHOST   = "https://ANKIDB";
 const SERVICE  = "/apex/pdb1/anki/event";
-const LAP      = "/lap/:demozone";
-const SPEED    = "/speed/:demozone";
-const OFFTRACK = "/offtrack/:demozone";
+const LAP      = "/lap";
+const SPEED    = "/speed";
+const OFFTRACK = "/offtrack";
+const DBLAP      = "/lap/:demozone";
+const DBSPEED    = "/speed/:demozone";
+const DBOFFTRACK = "/offtrack/:demozone";
 
 // Instantiate classes & servers
 var app    = express()
@@ -75,7 +78,7 @@ router.post(LAP, function(req, res) {
       laptime: input.data_laptime
     };
     q.push({
-      service: LAP.replace(':demozone', input.data_demozone),
+      service: DBLAP.replace(':demozone', input.data_demozone),
       data: data
     });
   });
@@ -100,7 +103,7 @@ router.post(SPEED, function(req, res) {
       lap: input.data_lap
     };
     q.push({
-      service: SPEED.replace(':demozone', input.data_demozone),
+      service: DBSPEED.replace(':demozone', input.data_demozone),
       data: data
     });
   });
@@ -125,7 +128,7 @@ router.post(OFFTRACK, function(req, res) {
       lastknowntrack: input.data_lastknowntrack
     };
     q.push({
-      service: OFFTRACK.replace(':demozone', input.data_demozone),
+      service: DBOFFTRACK.replace(':demozone', input.data_demozone),
       data: data
     });
   });
