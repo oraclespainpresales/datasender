@@ -14,9 +14,9 @@ var express = require('express')
 //var DBHOST   = "https://129.152.129.94";
 const DBHOST   = "https://ANKIDB";
 const SERVICE  = "/apex/pdb1/anki/event";
-const LAP      = "/lap";
-const SPEED    = "/speed";
-const OFFTRACK = "/offtrack";
+const LAP      = "/lap/:demozone";
+const SPEED    = "/speed/:demozone";
+const OFFTRACK = "/offtrack/:demozone";
 
 // Instantiate classes & servers
 var app    = express()
