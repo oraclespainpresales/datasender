@@ -11,9 +11,8 @@ var express = require('express')
   , dateFormat = require('dateformat')
 ;
 
-//var DBHOST   = "https://129.152.129.94";
-const DBHOST   = "https://ANKIDB";
-const SERVICE  = "/apex/pdb1/anki/event";
+const DBHOST   = "https://new.local.apex.digitalpracticespain.com";
+const SERVICE  = "/ords/pdb1/anki/event";
 const LAP      = "/lap";
 const SPEED    = "/speed";
 const OFFTRACK = "/offtrack";
