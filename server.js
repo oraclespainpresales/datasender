@@ -8,8 +8,13 @@ var express = require('express')
   , util = require('util')
   , queue = require('block-queue')
   , _ = require('lodash')
+  , log = require('npmlog-ts')
   , dateFormat = require('dateformat')
 ;
+
+log.stream = process.stdout;
+log.timestamp = true;
+log.level = 'verbose';
 
 const DBHOST   = "https://new.local.apex.digitalpracticespain.com";
 const SERVICE  = "/ords/pdb1/anki/event";
@@ -42,13 +47,13 @@ var queueConcurrency = 1;
 // Main handlers registration - BEGIN
 // Main error handler
 process.on('uncaughtException', function (err) {
-  console.log("Uncaught Exception: " + err);
-  console.log("Uncaught Exception: " + err.stack);
+  log.error("","Uncaught Exception: " + err);
+  log.error("","Uncaught Exception: " + err.stack);
 });
 // Detect CTRL-C
 process.on('SIGINT', function() {
-  console.log("Caught interrupt signal");
-  console.log("Exiting gracefully");
+  log.error("","Caught interrupt signal");
+  log.error("","Exiting gracefully");
   process.exit(2);
 });
 // Main handlers registration - END
@@ -61,7 +66,7 @@ app.use(bodyParser.json());
 
 // REST stuff - BEGIN
 router.post(LAP, function(req, res) {
-//  console.log("LAP: %j", req.body);
+//  log.info("","LAP: %j", req.body);
   var payload = req.body;
   _.each(payload, (element) => {
     var input = element.payload.data;
@@ -85,7 +90,7 @@ router.post(LAP, function(req, res) {
 });
 
 router.post(SPEED, function(req, res) {
-//  console.log("SPEED: %j", req.body);
+//  log.info("","SPEED: %j", req.body);
   var payload = req.body;
   _.each(payload, (element) => {
     var input = element.payload.data;
@@ -110,7 +115,7 @@ router.post(SPEED, function(req, res) {
 });
 
 router.post(OFFTRACK, function(req, res) {
-//  console.log("OFFTRACK: %j", req.body);
+//  log.info("","OFFTRACK: %j", req.body);
   var payload = req.body;
   _.each(payload, (element) => {
     var input = element.payload.data;
@@ -139,7 +144,7 @@ app.use(restURI, router);
 
 // Start QUEUE
 q = queue(queueConcurrency, function(task, done) {
-//  console.log("Queueing call to %s with data: %j", DBHOST + SERVICE + task.service, task.data);
+//  log.info("","Queueing call to %s with data: %j", DBHOST + SERVICE + task.service, task.data);
   insert(DBHOST + SERVICE + task.service, task.data);
   done(); // Let queue handle next task
 });
@@ -147,7 +152,7 @@ q = queue(queueConcurrency, function(task, done) {
 server.listen(PORT, () => {
   _.each(router.stack, (r) => {
     // We take just the first element in router.stack.route.methods[] as we assume one HTTP VERB at most per URI
-    console.log("'" + _.keys(r.route.methods)[0].toUpperCase() + "' method available at https://localhost:" + PORT + restURI + r.route.path);
+    log.info("","'" + _.keys(r.route.methods)[0].toUpperCase() + "' method available at https://localhost:" + PORT + restURI + r.route.path);
   });
 });
 
@@ -160,10 +165,10 @@ function insert(URI, data) {
       var end = '</span>';
       var s1 = err.message.substring(err.message.indexOf(start) + start.length);
       var s2 = s1.substring(0,s1.indexOf(end)).replace('\n', ' '); // Get rid of any newline in the error message
-      console.log("ERROR: %s", s2);
-      console.log("DATA: %j", data);
+      log.info("","ERROR: %s", s2);
+      log.info("","DATA: %j", data);
     } else {
-//      console.log("OK: %d", res.statusCode);
+//      log.info("","OK: %d", res.statusCode);
     }
   });
 }

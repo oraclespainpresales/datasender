@@ -15,6 +15,7 @@
     "dateformat": "^1.0.12",
     "express": "^4.14.0",
     "lodash": "^4.16.2",
+    "npmlog-ts": "0.0.1",
     "restify": "^4.1.1"
   }
 }
