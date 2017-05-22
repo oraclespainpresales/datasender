@@ -16,7 +16,7 @@ log.stream = process.stdout;
 log.timestamp = true;
 log.level = 'verbose';
 
-const DBHOST   = "https://new.local.apex.digitalpracticespain.com";
+const DBHOST   = "https://new.apex.digitalpracticespain.com";
 const SERVICE  = "/ords/pdb1/anki/event";
 const LAP      = "/lap";
 const SPEED    = "/speed";
